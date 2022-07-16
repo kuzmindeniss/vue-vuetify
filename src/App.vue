@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import UsersForm from "@/components/UsersForm.vue";
 </script>
 
 <template>
@@ -24,6 +23,4 @@ import UsersForm from "@/components/UsersForm.vue";
   height: 1px;
   min-height: 100vh;
 }
-
-
 </style>

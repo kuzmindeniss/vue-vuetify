@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
 import UsersForm from '@/components/UsersForm.vue';
+import UserComponent from '@/components/UserComponent.vue';
 
 Vue.use(VueRouter)
 
@@ -12,12 +12,9 @@ const routes: Array<RouteConfig> = [
     component: UsersForm
   },
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+    path: '/employee/:id',
+    name: 'employee',
+    component: UserComponent
   }
 ]
 

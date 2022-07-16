@@ -2,6 +2,7 @@ import {WorkerI} from "./types";
 
 const workers: WorkerI[] = [
 	{
+		id: 1,
 		name: 'Олег',
 		surname: 'Марков',
 		patronymic: 'Константинович',
@@ -12,6 +13,7 @@ const workers: WorkerI[] = [
 		rate: 'full'
 	},
 	{
+		id: 2,
 		name: 'Владимир',
 		surname: 'Овчинников',
 		patronymic: 'Львович',

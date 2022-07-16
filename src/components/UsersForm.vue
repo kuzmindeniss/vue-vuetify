@@ -1,12 +1,15 @@
 <script setup lang="ts">
-import workersTable, {tableHeaders} from '@/workers';
+import {tableHeaders} from '@/workers';
 import {WorkerI} from "@/types";
-import Vue, {computed, reactive, ref, watch} from "vue";
+import Vue, {computed, onMounted, reactive, ref, watch} from "vue";
+
+import {workers} from "@/store";
 
 let dialog = ref<boolean>(false);
 let dialogDelete = ref<boolean>(false);
 let editedIndex = ref<number>(-1);
 let defaultItem: WorkerI = {
+  id: workers.value.length,
   name: '',
   surname: '',
   patronymic: '',
@@ -36,8 +39,9 @@ const rates = [
   {ru: 'Половина', eng: 'half'}
 ]
 
-const workers = ref<WorkerI[]>(workersTable);
+// const workers = ref<WorkerI[]>(workersTable);
 let editedItem = reactive<WorkerI>({
+  id: workers.value.length + 1,
   name: '',
   surname: '',
   patronymic: '',
@@ -93,13 +97,23 @@ const save = () => {
   close();
 }
 
+onMounted(() => {
+  const workersLocal = localStorage.getItem('workers');
+  if (workersLocal) workers.value = JSON.parse(workersLocal);
+})
+
 watch(dialog, (val) => {
   val || close();
 });
+
 watch(dialogDelete, (val) => {
   val || closeDelete();
 });
 
+watch(workers, (val) => {
+  console.log('workers changed');
+  localStorage.setItem('workers', JSON.stringify(val));
+}, {deep: true})
 </script>
 
 
@@ -110,6 +124,15 @@ watch(dialogDelete, (val) => {
       :items-per-page="5"
       class="elevation-1"
   >
+    <template v-slot:[`item.name`]="{ item }">
+      <router-link :to="`/employee/${item.id}`">{{ item.name }}</router-link>
+    </template>
+    <template v-slot:[`item.surname`]="{ item }">
+      <router-link :to="`/employee/${item.id}`">{{ item.surname }}</router-link>
+    </template>
+    <template v-slot:[`item.patronymic`]="{ item }">
+      <router-link :to="`/employee/${item.id}`">{{ item.patronymic }}</router-link>
+    </template>
     <template v-slot:[`item.didHandOverEmploymentHistory`]="{ item }">
       <v-simple-checkbox
           v-model="item.didHandOverEmploymentHistory"
@@ -314,5 +337,14 @@ watch(dialogDelete, (val) => {
 <style lang="scss">
 .v-data-table-header th {
   text-align: left;
+}
+
+.v-application .v-data-table a {
+  color: inherit;
+  transition: all .2s;
+
+  &:hover {
+    color: #1976d2;
+  }
 }
 </style>
